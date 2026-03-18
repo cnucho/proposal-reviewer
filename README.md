@@ -11,6 +11,7 @@ It keeps the review process independent from the proposal authoring tool:
 ## What It Does
 
 - creates structured review requests from proposal and RFP text
+- imports review request bundles from the writer app
 - renders a strict Custom GPT prompt for proposal evaluation
 - validates review requests and results against JSON schemas
 - summarizes evaluator output into a quick review report
@@ -41,13 +42,10 @@ Initialize a project:
 python -m proposal_reviewer.cli init ./my_review_project --title "Proposal Review Workspace"
 ```
 
-Create a review request from local files:
+Import a review request bundle exported from the writer app:
 
 ```bash
-python -m proposal_reviewer.cli make-review-request ./my_review_project \
-  --title "Client A Proposal Review" \
-  --proposal-ref raw/proposals/proposal_v1.md \
-  --rfp-ref raw/rfp/client_rfp.txt
+python -m proposal_reviewer.cli import-request ./my_review_project ../writer_project/exports/handoff/review-request-001.json
 ```
 
 Render the Custom GPT prompt:

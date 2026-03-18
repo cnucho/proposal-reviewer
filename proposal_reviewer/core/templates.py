@@ -31,6 +31,13 @@ def _resolve_request_path(root: Path, ref: str | Path) -> Path:
         alt = (root / "requests" / f"{ref}.json").resolve()
         if alt.exists():
             return alt
+    for path in sorted((root / "requests").glob("*.json")):
+        try:
+            data = read_json(path)
+        except Exception:
+            continue
+        if data.get("id") == str(ref):
+            return path.resolve()
     raise FileNotFoundError(f"Review request not found: {ref}")
 
 

@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
+from .core.importer import import_review_request
 from .core.project_init import init_project
 from .core.review_request import create_review_request
 from .core.review_result import summarize_review_result
@@ -29,6 +30,10 @@ def build_parser() -> argparse.ArgumentParser:
     request_parser.add_argument("--rfp-ref", required=True, help="Project-relative RFP file path.")
     request_parser.add_argument("--focus", action="append", default=[], help="Evaluation focus area.")
     request_parser.add_argument("--request-id", default=None, help="Optional fixed request id.")
+
+    import_parser = sub.add_parser("import-request", help="Import a review request bundle exported from the writer app.")
+    import_parser.add_argument("path", help="Project directory.")
+    import_parser.add_argument("bundle_ref", help="Absolute or relative path to a ReviewRequestV1 JSON file.")
 
     prompt_parser = sub.add_parser("render-custom-gpt", help="Render a strict Custom GPT evaluation prompt.")
     prompt_parser.add_argument("path", help="Project directory.")
@@ -61,6 +66,10 @@ def main(argv: list[str] | None = None) -> int:
             focus=args.focus or None,
             request_id=args.request_id,
         )
+        print(report.to_text())
+        return 0 if report.ok else 1
+    if args.command == "import-request":
+        report = import_review_request(args.path, args.bundle_ref)
         print(report.to_text())
         return 0 if report.ok else 1
     if args.command == "render-custom-gpt":
