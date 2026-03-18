@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReviewRequestV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "proposal_ref",
+    "rfp_ref",
+    "proposal_excerpt",
+    "rfp_excerpt",
+    "evaluation_focus",
+    "created_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "ReviewRequestV1" },
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "proposal_ref": { "type": "string" },
+    "rfp_ref": { "type": "string" },
+    "proposal_excerpt": { "type": "string" },
+    "rfp_excerpt": { "type": "string" },
+    "evaluation_focus": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "created_at": { "type": "string" }
+  }
+}
