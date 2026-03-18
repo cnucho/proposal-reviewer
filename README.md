@@ -81,6 +81,17 @@ The reviewer is intentionally stricter than the writer.
 - requirement traceability matters more than surface polish
 - missing evidence, weak execution logic, and scoring risk are treated as first-class defects
 
+## Prompt Standard
+
+The default Custom GPT prompt is designed as a red-team evaluator, not a helpful writing coach.
+
+- it uses an explicit scoring rubric
+- it pushes the model to think in terms of evaluator risk and likely score loss
+- it discourages rewarding fluent prose when requirement coverage is weak
+- it includes a decision lens to judge whether the draft is actually safe to submit
+- it adds score consistency rules so high scores do not coexist with obvious structural gaps
+- it requires stronger findings and revision actions when the verdict is `fail`
+
 ## Tests
 
 ```bash

@@ -22,6 +22,12 @@ def test_make_review_request_and_render_prompt(tmp_path, capsys):
     out = capsys.readouterr().out
     assert "Custom GPT Review Prompt" in out
     assert "Return only valid JSON matching ReviewResultV1." in out
+    assert "Scoring Rubric" in out
+    assert "Judgment Rules" in out
+    assert "Evaluator Decision Lens" in out
+    assert "Score Consistency Rules" in out
+    assert "trying to decide whether this draft is safe to submit" in out
+    assert "choose the harsher but defensible judgment" in out
 
 
 def test_import_request_bundle_and_validate(tmp_path, capsys):
