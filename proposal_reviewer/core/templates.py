@@ -5,6 +5,9 @@ from pathlib import Path
 from .utils import read_json, write_text
 
 
+SUBMISSION_REVIEWER_URL = "https://chatgpt.com/g/g-69be092bffa88191925429d761e2d1c8-proposal-submission-reviewer"
+
+
 SYSTEM_RULES = """You are a strict proposal evaluation GPT.
 
 You are not the writer. You are an independent evaluator.
@@ -117,6 +120,8 @@ def render_custom_gpt_prompt(root: str | Path, request_ref: str | Path) -> str:
     prompt = "\n".join(
         [
             "# Custom GPT Review Prompt",
+            "",
+            f"Recommended GPT: {SUBMISSION_REVIEWER_URL}",
             "",
             "## System Rules",
             "",

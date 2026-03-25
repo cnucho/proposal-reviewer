@@ -21,6 +21,7 @@ def test_make_review_request_and_render_prompt(tmp_path, capsys):
     assert main(["render-custom-gpt", str(root), "review-request-001"]) == 0
     out = capsys.readouterr().out
     assert "Custom GPT Review Prompt" in out
+    assert "Recommended GPT: https://chatgpt.com/g/g-69be092bffa88191925429d761e2d1c8-proposal-submission-reviewer" in out
     assert "Return only valid JSON matching ReviewResultV1." in out
     assert "Scoring Rubric" in out
     assert "Judgment Rules" in out

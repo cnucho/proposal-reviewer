@@ -9,6 +9,7 @@ from .core.project_init import init_project
 from .core.review_request import create_review_request
 from .core.review_result import summarize_review_result
 from .core.templates import render_custom_gpt_prompt
+from .core.ui_server import serve_reviewer_ui
 from .core.validator import validate_project
 
 
@@ -46,6 +47,18 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser = sub.add_parser("validate", help="Validate requests and results against schemas.")
     validate_parser.add_argument("path", help="Project directory.")
 
+    launch_parser = sub.add_parser("launch", help="Launch the local reviewer web UI. Creates the project if missing.")
+    launch_parser.add_argument("path", help="Project directory.")
+    launch_parser.add_argument("--title", default="Proposal Review Workspace", help="Workspace title when creating a new project.")
+    launch_parser.add_argument("--host", default="127.0.0.1")
+    launch_parser.add_argument("--port", type=int, default=8877)
+    launch_parser.add_argument("--no-open-browser", action="store_true", help="Do not open the browser automatically.")
+
+    serve_parser = sub.add_parser("serve-ui", help="Serve the reviewer web UI for an existing project.")
+    serve_parser.add_argument("path", help="Project directory.")
+    serve_parser.add_argument("--host", default="127.0.0.1")
+    serve_parser.add_argument("--port", type=int, default=8877)
+
     return parser
 
 
@@ -82,6 +95,15 @@ def main(argv: list[str] | None = None) -> int:
         report = validate_project(args.path)
         print(report.to_text())
         return 0 if report.ok else 1
+    if args.command == "launch":
+        path = Path(args.path).resolve()
+        if not path.exists():
+            init_project(path, title=args.title)
+        serve_reviewer_ui(path, host=args.host, port=args.port, open_browser=not args.no_open_browser)
+        return 0
+    if args.command == "serve-ui":
+        serve_reviewer_ui(args.path, host=args.host, port=args.port)
+        return 0
     parser.print_help()
     return 1
 
